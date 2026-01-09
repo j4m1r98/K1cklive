@@ -657,22 +657,72 @@
             background: #484f58;
         }
 
-        /* Mensajes */
+        /* ========== ESTILOS COMPLETAMENTE REDISEÑADOS PARA MENSAJES ========== */
         .msg {
+            display: block;
             color: #ffffff;
             font-weight: 500;
             font-size: 1rem;
             line-height: 1.25rem;
-            margin: 0 6px;
-            margin-top: 2px;
+            margin: 2px 6px;
             padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.1s;
+        }
+        
+        .msg:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .badges-container {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 2px;
+            flex-shrink: 0;
+            height: 22px;
+            gap: 2px;
+            vertical-align: middle;
+        }
+        
+        .badge {
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 2px;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            vertical-align: middle;
+            filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+        }
+        
+        .badge-placeholder {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+            font-weight: bold;
+            margin-right: 2px;
         }
         
         .username {
             font-size: 1rem;
             line-height: 1.25rem;
-            font-weight: 700;  
-            white-space: normal;
+            font-weight: 700;
+            white-space: nowrap;
+            display: inline;            
         }
         
         .colon {
@@ -681,11 +731,12 @@
             line-height: 1.25rem;
             font-weight: 900;
             margin-right: 2px;
-            white-space: normal;
+            display: inline;
         }
         
-        .msg span:last-child {
+        .message-text {
             word-break: break-word;
+            display: inline;
         }
         
         .chat-emote {
@@ -695,6 +746,45 @@
             image-rendering: pixelated;
         }
 
+        /* Tooltip para badges */
+        .badge[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 5px;
+        }
+
+        /* Estilos para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .badge {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .badge img {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .msg {
+                padding: 3px 6px;
+                font-size: 0.95rem;
+            }
+            
+            .username {
+                font-size: 0.95rem;
+            }
+        }
+        
         /* Botón scroll */
         #scrollBottomBtn {  
             position: absolute;
@@ -1220,6 +1310,194 @@
         // Lista de canales guardados
         var savedChannels = JSON.parse(localStorage.getItem('savedChannels')) || [];
 
+        // ========== SISTEMA DE BADGES MEJORADO ==========
+        const badgeURLs = {
+            verified: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/verified.svg',
+            moderator: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/moderator.svg',
+            vip: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/vip.svg',
+            subscriber: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/subscriber.svg',
+            og: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/og.svg',
+            founder: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/founder.svg',
+            staff: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/staff.svg',
+            broadcaster: 'https://raw.githubusercontent.com/j4m1r98/Utilidades/refs/heads/main/broadcaster.svg'
+        };
+
+        const badgeNames = {
+            verified: 'Verificado',
+            moderator: 'Moderador',
+            vip: 'VIP',
+            subscriber: 'Suscriptor',
+            og: 'OG',
+            founder: 'Fundador',
+            staff: 'Staff',
+            broadcaster: 'Broadcaster'
+        };
+
+        // Función para obtener badges basada en datos reales del chat
+        function getUserBadgesFromMessage(messageData) {
+            const badges = [];
+            
+            if (!messageData || !messageData.sender) {
+                return badges;
+            }
+            
+            const sender = messageData.sender;
+            
+            // 1. Siempre verificar si es el broadcaster
+            if (sender.username && sender.username.toLowerCase() === currentChannel.toLowerCase()) {
+                badges.push('broadcaster');
+            }
+            
+            // 2. Verificar badges específicos del chat de Kick
+            if (sender.identity && sender.identity.badges) {
+                const identityBadges = sender.identity.badges;
+                
+                // Buscar badges específicos de Kick
+                identityBadges.forEach(badge => {
+                    if (badge.type === 'verified') badges.push('verified');
+                    if (badge.type === 'moderator') badges.push('moderator');
+                    if (badge.type === 'vip') badges.push('vip');
+                    if (badge.type === 'subscriber') badges.push('subscriber');
+                    if (badge.type === 'og') badges.push('og');
+                    if (badge.type === 'founder') badges.push('founder');
+                    if (badge.type === 'staff') badges.push('staff');
+                    if (badge.type === 'broadcaster') badges.push('broadcaster');
+                });
+            }
+            
+            // 3. Verificar propiedades directas (formato alternativo)
+            if (sender.is_verified) badges.push('verified');
+            if (sender.is_moderator) badges.push('moderator');
+            if (sender.is_vip) badges.push('vip');
+            if (sender.is_subscriber) badges.push('subscriber');
+            if (sender.is_og) badges.push('og');
+            if (sender.is_founder) badges.push('founder');
+            if (sender.is_staff) badges.push('staff');
+            if (sender.is_broadcaster) badges.push('broadcaster');
+            
+            // 4. Si no hay badges específicos, verificar si hay alguna propiedad que indique suscripción
+            if (badges.length === 0 && sender.subscriber && sender.subscriber > 0) {
+                badges.push('subscriber');
+            }
+            
+            // Eliminar duplicados
+            return [...new Set(badges)];
+        }
+
+        // Función simplificada para compatibilidad (solo para el broadcaster)
+        function getUserBadges(username) {
+            const userLower = username.toLowerCase();
+            if (userLower === currentChannel.toLowerCase()) {
+                return ['broadcaster'];
+            }
+            return [];
+        }
+
+        // Función para renderizar badges como HTML con imágenes SVG
+        function renderBadges(badges) {
+            if (!badges || badges.length === 0) return '';
+            
+            // Ordenar badges por importancia
+            const badgeOrder = ['broadcaster', 'staff', 'moderator', 'verified', 'vip', 'founder', 'og', 'subscriber'];
+            badges.sort((a, b) => badgeOrder.indexOf(a) - badgeOrder.indexOf(b));
+            
+            let badgesHTML = '<div class="badges-container">';
+            
+            badges.forEach(badgeType => {
+                if (badgeURLs[badgeType]) {
+                    // Crear elemento img con error handling
+                    badgesHTML += `<div class="badge ${badgeType}" title="${badgeNames[badgeType] || badgeType}">
+                        <img src="${badgeURLs[badgeType]}" alt="${badgeType}" 
+                             onerror="this.onerror=null; this.style.display='none'; 
+                                     this.parentNode.innerHTML='<div style=\'width:16px;height:16px;background:#333;border-radius:3px;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:bold;\'>${getBadgeInitial(badgeType)}</div>'">
+                    </div>`;
+                } else {
+                    // Placeholder si no existe el badge
+                    badgesHTML += `<div class="badge-placeholder" title="${badgeType}">${getBadgeInitial(badgeType)}</div>`;
+                }
+            });
+            
+            badgesHTML += '</div>';
+            return badgesHTML;
+        }
+
+        // Función para obtener la inicial del badge como fallback
+        function getBadgeInitial(badgeType) {
+            const initials = {
+                'verified': '✓',
+                'moderator': 'M',
+                'vip': 'VIP',
+                'subscriber': 'S',
+                'og': 'OG',
+                'founder': 'F',
+                'staff': 'STAFF',
+                'broadcaster': 'B'
+            };
+            return initials[badgeType] || badgeType.charAt(0).toUpperCase();
+        }
+
+        // ========== FUNCIÓN SIMPLIFICADA PARA AGREGAR MENSAJES ==========
+        function addMsgToContainerWithBadges(user, text, containerId, badgesArray) {
+            var messagesBox = document.getElementById(containerId);
+            var scrollBtn = containerId === "messages" ? 
+                document.getElementById("scrollBottomBtn") : 
+                document.getElementById("fullscreenScrollBottomBtn");
+            
+            var atBottom = messagesBox.scrollHeight - messagesBox.scrollTop - messagesBox.clientHeight < 50;
+            
+            var msgElement = document.createElement("div");
+            msgElement.className = "msg";
+            
+            // Usar badges reales o obtener uno mínimo
+            const userBadges = badgesArray && badgesArray.length > 0 ? 
+                badgesArray : 
+                getUserBadges(user); // Fallback para broadcaster
+            
+            const badgesHTML = renderBadges(userBadges);
+            
+            var color = nameColor(user);
+            var parsedText = parseEmotes(text);
+
+            // ESTRUCTURA SIMPLIFICADA Y CORRECTA
+            msgElement.innerHTML = 
+                `${badgesHTML}
+                <span class="username" style="color:${color}">${user}</span>
+                <span class="colon">:</span>
+                <span class="message-text">${parsedText}</span>`;
+            
+            messagesBox.appendChild(msgElement);
+
+            if (!pauseRemoval) {
+                while (messagesBox.children.length > MAX_MESSAGES) {
+                    messagesBox.removeChild(messagesBox.firstChild);
+                }
+            }
+
+            if (atBottom || !pauseRemoval) {
+                messagesBox.scrollTop = messagesBox.scrollHeight;
+                if (scrollBtn) scrollBtn.style.display = "none";
+            }
+        }
+
+        function addMsgToBothContainersWithBadges(user, text, badges) {
+            addMsgToContainerWithBadges(user, text, "messages", badges);
+            addMsgToContainerWithBadges(user, text, "fullscreenMessages", badges);
+        }
+
+        // Función de compatibilidad (para mantener el funcionamiento existente)
+        function addMsgToBothContainers(user, text) {
+            // Para compatibilidad, obtener badges mínimos
+            const badges = getUserBadges(user);
+            addMsgToContainerWithBadges(user, text, "messages", badges);
+            addMsgToContainerWithBadges(user, text, "fullscreenMessages", badges);
+        }
+
+        function addMsgToContainer(user, text, containerId) {
+            // Para compatibilidad, obtener badges mínimos
+            const badges = getUserBadges(user);
+            addMsgToContainerWithBadges(user, text, containerId, badges);
+        }
+
         // ========== PANTALLA COMPLETA MEJORADA ==========
         function toggleFullscreen() {
             if (isFullscreen) {
@@ -1720,46 +1998,22 @@
                     var data = JSON.parse(e.data);
                     if (!data.data) return;
                     var messageData = JSON.parse(data.data);
+                    
                     if (messageData.sender && messageData.content) {
-                        addMsgToBothContainers(messageData.sender.username, messageData.content);
+                        // Obtener badges reales del mensaje
+                        const badges = getUserBadgesFromMessage(messageData);
+                        
+                        // Pasar los badges a la función de renderizado
+                        addMsgToBothContainersWithBadges(
+                            messageData.sender.username, 
+                            messageData.content, 
+                            badges
+                        );
                     }
                 } catch(e) {
-                    // Error silencioso
+                    console.error('Error procesando mensaje:', e);
                 }
             };
-        }
-
-        function addMsgToBothContainers(user, text) {
-            addMsgToContainer(user, text, "messages");
-            addMsgToContainer(user, text, "fullscreenMessages");
-        }
-
-        function addMsgToContainer(user, text, containerId) {
-            var messagesBox = document.getElementById(containerId);
-            var scrollBtn = containerId === "messages" ? 
-                document.getElementById("scrollBottomBtn") : 
-                document.getElementById("fullscreenScrollBottomBtn");
-            
-            var atBottom = messagesBox.scrollHeight - messagesBox.scrollTop - messagesBox.clientHeight < 50;
-            
-            var msgElement = document.createElement("div");
-            msgElement.className = "msg";
-            var color = nameColor(user);
-            var parsedText = parseEmotes(text);
-
-            msgElement.innerHTML = "<span class='username' style='color:" + color + "'>" + user + "</span><span class='colon'>:</span> <span>" + parsedText + "</span>";
-            messagesBox.appendChild(msgElement);
-
-            if (!pauseRemoval) {
-                while (messagesBox.children.length > MAX_MESSAGES) {
-                    messagesBox.removeChild(messagesBox.firstChild);
-                }
-            }
-
-            if (atBottom || !pauseRemoval) {
-                messagesBox.scrollTop = messagesBox.scrollHeight;
-                if (scrollBtn) scrollBtn.style.display = "none";
-            }
         }
 
         // ===== 7TV GLOBAL =====

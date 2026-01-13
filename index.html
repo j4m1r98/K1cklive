@@ -674,19 +674,72 @@
             background: rgba(255, 255, 255, 0.05);
         }
         
+        /* ========== ESTILOS PARA RESPUESTAS A MENSAJES ========== */
+        .reply-indicator {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #8b949e;
+            margin-bottom: 4px;
+            padding: 4px 8px;
+            background: rgba(88, 166, 255, 0.1);
+            border-radius: 4px;
+            border-left: 3px solid #58a6ff;
+            cursor: pointer;
+            transition: background 0.2s;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .reply-indicator:hover {
+            background: rgba(88, 166, 255, 0.2);
+        }
+
+        .reply-icon {
+            margin-right: 4px;
+            font-size: 0.8rem;
+            color: #58a6ff;
+            flex-shrink: 0;
+        }
+
+        .reply-text {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-style: italic;
+        }
+
+        .reply-username {
+            color: #58a6ff;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .reply-message-preview {
+            color: #c9d1d9;
+            opacity: 0.9;
+        }
+
+        /* Estilo para el mensaje principal que es una respuesta */
+        .msg.is-reply {
+            margin-top: 8px;            
+            padding-left: 8px;
+        }
+        
         .badges-container {
             display: inline-flex;
             align-items: center;
             margin-right: 2px;
             flex-shrink: 0;
-            height: 22px;
-            gap: 2px;
+            height: 20px;
+            gap: 0px;
             vertical-align: middle;
         }
         
         .badge {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -704,8 +757,8 @@
         }
         
         .badge-placeholder {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: #333;
             border-radius: 3px;
             display: inline-flex;
@@ -717,12 +770,28 @@
             margin-right: 2px;
         }
         
+        /* ========== NOMBRE DE USUARIO CLICKEABLE ========== */
         .username {
             font-size: 1rem;
             line-height: 1.25rem;
             font-weight: 700;
             white-space: nowrap;
-            display: inline;            
+            display: inline;
+            margin-left: 0px;
+            margin-right: 0px;
+            cursor: pointer;
+            position: relative;
+            transition: opacity 0.2s;
+        }
+        
+        .username:hover {
+            opacity: 0.9;
+        }
+        
+        /* Eliminar cualquier subrayado o efecto visual no deseado */
+        .username:hover::after,
+        .username:active::after {
+            content: none !important;
         }
         
         .colon {
@@ -730,7 +799,8 @@
             font-size: 1rem;
             line-height: 1.25rem;
             font-weight: 900;
-            margin-right: 2px;
+            margin-left: 0px;
+            margin-right: 4px;
             display: inline;
         }
         
@@ -782,6 +852,10 @@
             
             .username {
                 font-size: 0.95rem;
+            }
+            
+            .reply-indicator {
+                font-size: 0.8rem;
             }
         }
         
@@ -946,6 +1020,105 @@
         /* Clase temporal para debug */
         .video-player.fullscreen-mode {
             border: 2px solid #6441a5 !important;
+        }
+
+        /* Modal de confirmación */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .confirmation-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            border: 2px solid #6441a5;
+            box-shadow: 0 0 20px rgba(100, 65, 165, 0.3);
+            animation: modalAppear 0.3s ease-out;
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-header i {
+            color: #6441a5;
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .modal-body {
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            min-width: 80px;
+        }
+        
+        .modal-btn.cancel {
+            background: #333;
+            color: white;
+        }
+        
+        .modal-btn.cancel:hover {
+            background: #444;
+        }
+        
+        .modal-btn.confirm {
+            background: #d32f2f;
+            color: white;
+        }
+        
+        .modal-btn.confirm:hover {
+            background: #f44336;
         }
 
         /* Responsive para tablets */
@@ -1283,6 +1456,23 @@
         </div>
     </div>
 
+    <!-- Modal de confirmación -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Confirmar eliminación</h3>
+            </div>
+            <div class="modal-body" id="modalMessage">
+                ¿Estás seguro de que quieres eliminar este elemento?
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeConfirmationModal()">Cancelar</button>
+                <button class="modal-btn confirm" onclick="confirmRemoval()">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Variables globales
         var hls = null;
@@ -1303,12 +1493,105 @@
         var ws = null;
         var emotes = {};
         var rooms = {};
-        var MAX_MESSAGES = 40;
+        var MAX_MESSAGES = 100;
         var pauseRemoval = false;
         var pauseRemovalTimer = null;
         
         // Lista de canales guardados
         var savedChannels = JSON.parse(localStorage.getItem('savedChannels')) || [];
+        
+        // Variables globales para el modal
+        var itemToRemove = null;
+        var onConfirmCallback = null;
+        var modalTitle = "Confirmar eliminación";
+        var confirmButtonText = "Sí, eliminar";
+        var cancelButtonText = "Cancelar";
+        
+        // Variables para el sistema de respuestas
+        var messageHistory = {}; // Almacena mensajes con ID para referencia
+        var lastMessageId = 0;
+        
+        // ========== SISTEMA DE BADGES DE SUSCRIPTOR PERSONALIZADOS ==========
+        var channelSubscriberBadges = {}; // Almacenará las badges por canal
+        var channelSubscriberBadgesCache = {}; // Cache para evitar múltiples peticiones
+
+        // Función para obtener las badges de suscriptor de un canal
+        function getChannelSubscriberBadges(channelName) {
+            // Si ya tenemos las badges en cache, retornarlas
+            if (channelSubscriberBadgesCache[channelName]) {
+                return Promise.resolve(channelSubscriberBadgesCache[channelName]);
+            }
+            
+            return new Promise((resolve, reject) => {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', `https://kick.com/api/v2/channels/${channelName}`, true);
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            var data = JSON.parse(xhr.responseText);
+                            var badges = data.subscriber_badges || [];
+                            
+                            // Procesar las badges para crear un mapa de meses -> URL
+                            var badgeMap = {};
+                            badges.forEach(badge => {
+                                if (badge.months && badge.badge_image && badge.badge_image.src) {
+                                    // Convertir la URL relativa a absoluta si es necesario
+                                    let badgeUrl = badge.badge_image.src;
+                                    if (badgeUrl.startsWith('//')) {
+                                        badgeUrl = 'https:' + badgeUrl;
+                                    } else if (badgeUrl.startsWith('/')) {
+                                        badgeUrl = 'https://kick.com' + badgeUrl;
+                                    }
+                                    badgeMap[badge.months] = badgeUrl;
+                                }
+                            });
+                            
+                            channelSubscriberBadgesCache[channelName] = badgeMap;
+                            channelSubscriberBadges[channelName] = badgeMap;
+                            resolve(badgeMap);
+                        } catch (e) {
+                            console.error('Error parsing subscriber badges:', e);
+                            resolve({}); // Retornar objeto vacío en caso de error
+                        }
+                    } else {
+                        console.warn('No se pudieron obtener las badges de suscriptor para', channelName);
+                        resolve({}); // Retornar objeto vacío
+                    }
+                };
+                xhr.onerror = function() {
+                    console.warn('Error de red al obtener badges de suscriptor');
+                    resolve({}); // Retornar objeto vacío
+                };
+                xhr.send();
+            });
+        }
+
+        // Función para obtener la badge de suscriptor apropiada según los meses
+        function getSubscriberBadgeUrl(channelName, months) {
+            if (!channelName || !months || months < 1) {
+                return badgeURLs.subscriber; // Usar la badge por defecto
+            }
+            
+            const badges = channelSubscriberBadges[channelName];
+            if (!badges || Object.keys(badges).length === 0) {
+                return badgeURLs.subscriber; // Usar la badge por defecto
+            }
+            
+            // Ordenar los meses disponibles de menor a mayor
+            const availableMonths = Object.keys(badges).map(Number).sort((a, b) => a - b);
+            
+            // Encontrar la badge más cercana (el mayor número de meses que sea <= al meses del usuario)
+            let selectedMonth = 1;
+            for (const month of availableMonths) {
+                if (month <= months) {
+                    selectedMonth = month;
+                } else {
+                    break;
+                }
+            }
+            
+            return badges[selectedMonth] || badgeURLs.subscriber;
+        }
 
         // ========== SISTEMA DE BADGES MEJORADO ==========
         const badgeURLs = {
@@ -1343,77 +1626,140 @@
             
             const sender = messageData.sender;
             
+            // Verificar si es una respuesta a un mensaje del broadcaster
+            if (messageData.reply && messageData.reply.parent_message) {
+                const parentSender = messageData.reply.parent_message.sender;
+                if (parentSender && parentSender.username && 
+                    parentSender.username.toLowerCase() === currentChannel.toLowerCase()) {
+                    // El mensaje original era del broadcaster
+                    // Podemos agregar un badge especial para respuestas al broadcaster si queremos
+                }
+            }
+            
             // 1. Siempre verificar si es el broadcaster
             if (sender.username && sender.username.toLowerCase() === currentChannel.toLowerCase()) {
-                badges.push('broadcaster');
+                badges.push({type: 'broadcaster'});
             }
             
             // 2. Verificar badges específicos del chat de Kick
             if (sender.identity && sender.identity.badges) {
                 const identityBadges = sender.identity.badges;
                 
-                // Buscar badges específicos de Kick
                 identityBadges.forEach(badge => {
-                    if (badge.type === 'verified') badges.push('verified');
-                    if (badge.type === 'moderator') badges.push('moderator');
-                    if (badge.type === 'vip') badges.push('vip');
-                    if (badge.type === 'subscriber') badges.push('subscriber');
-                    if (badge.type === 'og') badges.push('og');
-                    if (badge.type === 'founder') badges.push('founder');
-                    if (badge.type === 'staff') badges.push('staff');
-                    if (badge.type === 'broadcaster') badges.push('broadcaster');
+                    if (badge.type === 'verified') badges.push({type: 'verified'});
+                    if (badge.type === 'moderator') badges.push({type: 'moderator'});
+                    if (badge.type === 'vip') badges.push({type: 'vip'});
+                    if (badge.type === 'subscriber') {
+                        // Para suscriptor, necesitamos los meses
+                        let months = 1;
+                        if (sender.subscriber) {
+                            if (typeof sender.subscriber === 'object' && sender.subscriber.months) {
+                                months = sender.subscriber.months;
+                            } else if (typeof sender.subscriber === 'number') {
+                                months = sender.subscriber;
+                            }
+                        }
+                        badges.push({type: 'subscriber', months: months});
+                    }
+                    if (badge.type === 'og') badges.push({type: 'og'});
+                    if (badge.type === 'founder') badges.push({type: 'founder'});
+                    if (badge.type === 'staff') badges.push({type: 'staff'});
+                    if (badge.type === 'broadcaster') badges.push({type: 'broadcaster'});
                 });
             }
             
             // 3. Verificar propiedades directas (formato alternativo)
-            if (sender.is_verified) badges.push('verified');
-            if (sender.is_moderator) badges.push('moderator');
-            if (sender.is_vip) badges.push('vip');
-            if (sender.is_subscriber) badges.push('subscriber');
-            if (sender.is_og) badges.push('og');
-            if (sender.is_founder) badges.push('founder');
-            if (sender.is_staff) badges.push('staff');
-            if (sender.is_broadcaster) badges.push('broadcaster');
+            if (sender.is_verified) badges.push({type: 'verified'});
+            if (sender.is_moderator) badges.push({type: 'moderator'});
+            if (sender.is_vip) badges.push({type: 'vip'});
+            if (sender.is_subscriber) {
+                // Obtener meses de suscripción
+                let months = 1;
+                if (sender.subscriber) {
+                    if (typeof sender.subscriber === 'object' && sender.subscriber.months) {
+                        months = sender.subscriber.months;
+                    } else if (typeof sender.subscriber === 'number') {
+                        months = sender.subscriber;
+                    }
+                }
+                badges.push({type: 'subscriber', months: months});
+            }
+            if (sender.is_og) badges.push({type: 'og'});
+            if (sender.is_founder) badges.push({type: 'founder'});
+            if (sender.is_staff) badges.push({type: 'staff'});
+            if (sender.is_broadcaster) badges.push({type: 'broadcaster'});
             
-            // 4. Si no hay badges específicos, verificar si hay alguna propiedad que indique suscripción
-            if (badges.length === 0 && sender.subscriber && sender.subscriber > 0) {
-                badges.push('subscriber');
+            // 4. Si no hay badges de suscriptor pero hay propiedad subscriber, agregarlo
+            if (badges.findIndex(b => b.type === 'subscriber') === -1 && sender.subscriber) {
+                let months = 1;
+                if (typeof sender.subscriber === 'object' && sender.subscriber.months) {
+                    months = sender.subscriber.months;
+                } else if (typeof sender.subscriber === 'number') {
+                    months = sender.subscriber;
+                }
+                badges.push({type: 'subscriber', months: months});
             }
             
-            // Eliminar duplicados
-            return [...new Set(badges)];
+            // Eliminar duplicados manteniendo el primero
+            const seen = new Set();
+            const uniqueBadges = [];
+            badges.forEach(badge => {
+                if (!seen.has(badge.type)) {
+                    seen.add(badge.type);
+                    uniqueBadges.push(badge);
+                }
+            });
+            
+            return uniqueBadges;
         }
 
-        // Función simplificada para compatibilidad (solo para el broadcaster)
+        // Función para compatibilidad
         function getUserBadges(username) {
             const userLower = username.toLowerCase();
             if (userLower === currentChannel.toLowerCase()) {
-                return ['broadcaster'];
+                return [{type: 'broadcaster'}];
             }
             return [];
         }
 
-        // Función para renderizar badges como HTML con imágenes SVG
-        function renderBadges(badges) {
-            if (!badges || badges.length === 0) return '';
+        // Función para renderizar badges como HTML con imágenes SVG - CORREGIDA
+        function renderBadges(badgeArray) {
+            if (!badgeArray || badgeArray.length === 0) return '';
             
             // Ordenar badges por importancia
             const badgeOrder = ['broadcaster', 'staff', 'moderator', 'verified', 'vip', 'founder', 'og', 'subscriber'];
-            badges.sort((a, b) => badgeOrder.indexOf(a) - badgeOrder.indexOf(b));
+            badgeArray.sort((a, b) => badgeOrder.indexOf(a.type) - badgeOrder.indexOf(b.type));
             
             let badgesHTML = '<div class="badges-container">';
             
-            badges.forEach(badgeType => {
-                if (badgeURLs[badgeType]) {
-                    // Crear elemento img con error handling
-                    badgesHTML += `<div class="badge ${badgeType}" title="${badgeNames[badgeType] || badgeType}">
-                        <img src="${badgeURLs[badgeType]}" alt="${badgeType}" 
-                             onerror="this.onerror=null; this.style.display='none'; 
-                                     this.parentNode.innerHTML='<div style=\'width:16px;height:16px;background:#333;border-radius:3px;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:bold;\'>${getBadgeInitial(badgeType)}</div>'">
-                    </div>`;
+            badgeArray.forEach(badge => {
+                const badgeType = badge.type;
+                
+                if (badgeType === 'subscriber') {
+                    // Usar la badge de suscriptor personalizada del canal si está disponible
+                    const months = badge.months || 1;
+                    let badgeUrl = getSubscriberBadgeUrl(currentChannel, months);
+                    
+                    badgesHTML += `<div class="badge subscriber" title="Suscriptor (${months} mes${months !== 1 ? 'es' : ''})">` +
+                        `<img src="${badgeUrl}" alt="subscriber" onerror="this.onerror=null; this.src='${badgeURLs.subscriber}';">` +
+                        `</div>`;
                 } else {
-                    // Placeholder si no existe el badge
-                    badgesHTML += `<div class="badge-placeholder" title="${badgeType}">${getBadgeInitial(badgeType)}</div>`;
+                    // Para otros badges, usar las URLs estándar
+                    if (badgeURLs[badgeType]) {
+                        const badgeInitial = getBadgeInitial(badgeType);
+                        const badgeTitle = badgeNames[badgeType] || badgeType;
+                        
+                        // CORREGIDO: Usar escape correcto de comillas
+                        badgesHTML += `<div class="badge ${badgeType}" title="${badgeTitle}">` +
+                            `<img src="${badgeURLs[badgeType]}" alt="${badgeType}" ` +
+                            `onerror="this.onerror=null; this.style.display='none'; ` +
+                            `this.parentNode.innerHTML='<div style=\\'width:16px;height:16px;background:#333;border-radius:3px;` +
+                            `display:flex;align-items:center;justify-content:center;color:white;font-size:10px;` +
+                            `font-weight:bold;\\'>${badgeInitial}</div>'">` +
+                            `</div>`;
+                    } else {
+                        badgesHTML += `<div class="badge-placeholder" title="${badgeType}">${getBadgeInitial(badgeType)}</div>`;
+                    }
                 }
             });
             
@@ -1436,8 +1782,36 @@
             return initials[badgeType] || badgeType.charAt(0).toUpperCase();
         }
 
-        // ========== FUNCIÓN SIMPLIFICADA PARA AGREGAR MENSAJES ==========
-        function addMsgToContainerWithBadges(user, text, containerId, badgesArray) {
+        // ========== FUNCIÓN PARA DESPLAZAR A MENSAJES ORIGINALES ==========
+        function scrollToMessage(username, containerId) {
+            var messagesBox = document.getElementById(containerId);
+            var messages = messagesBox.getElementsByClassName('msg');
+            
+            // Buscar el último mensaje de ese usuario
+            for (var i = messages.length - 1; i >= 0; i--) {
+                var msg = messages[i];
+                var usernameElement = msg.querySelector('.username');
+                
+                if (usernameElement && usernameElement.textContent === username) {
+                    // Resaltar temporalmente el mensaje
+                    msg.style.backgroundColor = 'rgba(88, 166, 255, 0.2)';
+                    msg.style.transition = 'background-color 0.5s';
+                    
+                    // Desplazar a la vista
+                    msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Quitar el resaltado después de 2 segundos
+                    setTimeout(function() {
+                        msg.style.backgroundColor = '';
+                    }, 2000);
+                    
+                    break;
+                }
+            }
+        }
+
+        // ========== FUNCIÓN MEJORADA PARA AGREGAR MENSAJES CON RESPUESTAS ==========
+        function addMsgToContainerWithBadges(user, text, containerId, badgesArray, replyData) {
             var messagesBox = document.getElementById(containerId);
             var scrollBtn = containerId === "messages" ? 
                 document.getElementById("scrollBottomBtn") : 
@@ -1448,28 +1822,78 @@
             var msgElement = document.createElement("div");
             msgElement.className = "msg";
             
-            // Usar badges reales o obtener uno mínimo
+            // Asignar ID único al mensaje
+            lastMessageId++;
+            msgElement.setAttribute('data-msg-id', lastMessageId);
+            
             const userBadges = badgesArray && badgesArray.length > 0 ? 
                 badgesArray : 
-                getUserBadges(user); // Fallback para broadcaster
+                getUserBadges(user);
             
             const badgesHTML = renderBadges(userBadges);
             
             var color = nameColor(user);
             var parsedText = parseEmotes(text);
-
-            // ESTRUCTURA SIMPLIFICADA Y CORRECTA
-            msgElement.innerHTML = 
-                `${badgesHTML}
-                <span class="username" style="color:${color}">${user}</span>
-                <span class="colon">:</span>
-                <span class="message-text">${parsedText}</span>`;
             
+            // Escapar comillas simples en el nombre de usuario
+            var safeUser = user.replace(/'/g, "\\'");
+            
+            var messageHTML = '';
+            
+            // Si es una respuesta, agregar el indicador
+            if (replyData && replyData.parent_message) {
+                msgElement.classList.add('is-reply');
+                
+                var replyingTo = replyData.parent_message.sender ? replyData.parent_message.sender.username : 'Usuario';
+                var replyText = replyData.parent_message.content || '';
+                
+                // Acortar el texto de respuesta si es muy largo
+                if (replyText.length > 80) {
+                    replyText = replyText.substring(0, 77) + '...';
+                }
+                
+                // Parsear emotes en el texto de respuesta
+                replyText = parseEmotes(replyText);
+                
+                // Mostrar el fragmento del mensaje original si existe
+                var replyPreview = '';
+                if (replyText && replyText.trim() !== '') {
+                    replyPreview = ': <span class="reply-message-preview">' + replyText + '</span>';
+                }
+                
+                // Crear el indicador de respuesta
+                messageHTML += '<div class="reply-indicator" onclick="scrollToMessage(\'' + replyingTo + '\', \'' + containerId + '\')" title="Haz clic para ver el mensaje original">';
+                messageHTML += '<i class="fas fa-reply reply-icon"></i>';
+                messageHTML += '<span class="reply-text">';
+                messageHTML += 'Respondiendo a <span class="reply-username">' + replyingTo + '</span>' + replyPreview;
+                messageHTML += '</span>';
+                messageHTML += '</div>';
+                
+                // Guardar referencia si es necesario
+                messageHistory[lastMessageId] = {
+                    user: user,
+                    text: text,
+                    replyTo: replyData.parent_message.sender ? replyData.parent_message.sender.username : null
+                };
+            }
+            
+            // Agregar el mensaje principal
+            messageHTML += badgesHTML + 
+                '<span class="username" style="color:' + color + '" onclick="loadUserChannel(\'' + safeUser + '\')" title="Ver canal de ' + user + '">' + user + '</span>' +
+                '<span class="colon">:</span>' +
+                '<span class="message-text">' + parsedText + '</span>';
+            
+            msgElement.innerHTML = messageHTML;
             messagesBox.appendChild(msgElement);
 
             if (!pauseRemoval) {
                 while (messagesBox.children.length > MAX_MESSAGES) {
-                    messagesBox.removeChild(messagesBox.firstChild);
+                    var firstMsg = messagesBox.firstChild;
+                    var firstMsgId = firstMsg.getAttribute('data-msg-id');
+                    if (firstMsgId && messageHistory[firstMsgId]) {
+                        delete messageHistory[firstMsgId];
+                    }
+                    messagesBox.removeChild(firstMsg);
                 }
             }
 
@@ -1479,23 +1903,108 @@
             }
         }
 
-        function addMsgToBothContainersWithBadges(user, text, badges) {
-            addMsgToContainerWithBadges(user, text, "messages", badges);
-            addMsgToContainerWithBadges(user, text, "fullscreenMessages", badges);
+        function addMsgToBothContainersWithBadges(user, text, badges, replyData) {
+            addMsgToContainerWithBadges(user, text, "messages", badges, replyData);
+            addMsgToContainerWithBadges(user, text, "fullscreenMessages", badges, replyData);
         }
 
-        // Función de compatibilidad (para mantener el funcionamiento existente)
+        // Función de compatibilidad
         function addMsgToBothContainers(user, text) {
-            // Para compatibilidad, obtener badges mínimos
             const badges = getUserBadges(user);
-            addMsgToContainerWithBadges(user, text, "messages", badges);
-            addMsgToContainerWithBadges(user, text, "fullscreenMessages", badges);
+            addMsgToBothContainersWithBadges(user, text, badges, null);
         }
 
         function addMsgToContainer(user, text, containerId) {
-            // Para compatibilidad, obtener badges mínimos
             const badges = getUserBadges(user);
-            addMsgToContainerWithBadges(user, text, containerId, badges);
+            addMsgToContainerWithBadges(user, text, containerId, badges, null);
+        }
+
+        // ========== MODAL DE CONFIRMACIÓN ==========
+        // Configuración personalizable del modal
+        function setModalConfig(config = {}) {
+            if (config.title) modalTitle = config.title;
+            if (config.confirmText) confirmButtonText = config.confirmText;
+            if (config.cancelText) cancelButtonText = config.cancelText;
+        }
+
+        // Función para abrir el modal de confirmación
+        function openConfirmationModal(itemId, message, onConfirm) {
+            itemToRemove = itemId;
+            onConfirmCallback = onConfirm;
+            
+            var modal = document.getElementById('confirmationModal');
+            var modalMessage = document.getElementById('modalMessage');
+            var modalHeader = modal.querySelector('.modal-header h3');
+            var confirmBtn = modal.querySelector('.modal-btn.confirm');
+            var cancelBtn = modal.querySelector('.modal-btn.cancel');
+            
+            // Configurar contenido
+            modalMessage.textContent = message || "¿Estás seguro de que quieres eliminar este elemento?";
+            modalHeader.textContent = modalTitle;
+            confirmBtn.textContent = confirmButtonText;
+            cancelBtn.textContent = cancelButtonText;
+            
+            modal.classList.add('active');
+            
+            // Agregar evento para cerrar con ESC
+            document.addEventListener('keydown', handleEscapeKey);
+        }
+
+        // Función para cerrar el modal
+        function closeConfirmationModal() {
+            var modal = document.getElementById('confirmationModal');
+            modal.classList.remove('active');
+            itemToRemove = null;
+            onConfirmCallback = null;
+            
+            // Remover evento ESC
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+
+        // Función para confirmar la eliminación
+        function confirmRemoval() {
+            if (itemToRemove !== null && typeof onConfirmCallback === 'function') {
+                onConfirmCallback(itemToRemove);
+            }
+            closeConfirmationModal();
+        }
+
+        // Manejar tecla ESC
+        function handleEscapeKey(event) {
+            if (event.key === 'Escape' || event.keyCode === 27) {
+                closeConfirmationModal();
+            }
+        }
+
+        // ========== FUNCIÓN PARA CONFIRMAR ELIMINACIÓN DE CANAL ==========
+        function confirmRemoveChannel(channelName) {
+            var message = "¿Estás seguro de que quieres eliminar el canal '" + channelName + "' de tu lista?";
+            openConfirmationModal(channelName, message, function(confirmedChannelName) {
+                removeChannel(confirmedChannelName);
+            });
+        }
+
+        // ========== FUNCIÓN PARA CARGAR CANAL DESDE CLICK EN USUARIO ==========
+        function loadUserChannel(username) {
+            console.log(`Cargando canal de usuario: ${username}`);
+            
+            // Verificar si el usuario hace clic en su propio nombre (evitar recarga innecesaria)
+            if (currentChannel.toLowerCase() === username.toLowerCase()) {
+                console.log(`Ya estás en el canal de ${username}`);
+                return;
+            }
+            
+            // Limpiar eventos anteriores
+            clearInterval(viewersUpdateInterval);
+            
+            // Establecer el nombre de usuario en el input
+            setChannelInput(username, true);
+            
+            // Cargar el stream
+            loadStream();
+            
+            // Desplazar hacia el contenedor de video
+            scrollToVideoContainer();
         }
 
         // ========== PANTALLA COMPLETA MEJORADA ==========
@@ -1513,7 +2022,6 @@
             var fullscreenContainer = document.getElementById('fullscreenContainer');
             var fullscreenVideoSection = document.querySelector('.fullscreen-video-section');
             
-            // Verificar que hay un stream cargado
             if (!videoPlayer.src || videoPlayer.src === '') {
                 console.log('No hay stream para mostrar en pantalla completa');
                 updateStatus('<i class="fas fa-exclamation-circle"></i> No hay stream cargado', 'error');
@@ -1522,29 +2030,23 @@
             
             console.log('🎬 Entrando en pantalla completa...');
             
-            // 1. Guardar estado actual
             var wasPlaying = !videoPlayer.paused;
             var currentTime = videoPlayer.currentTime;
             var currentVolume = videoPlayer.volume;
             var wasMuted = videoPlayer.muted;
             
-            // 2. MOVER el video al contenedor de fullscreen
             fullscreenVideoSection.appendChild(videoPlayer);
             
-            // 3. Aplicar clases de estilo fullscreen
             videoPlayer.classList.add('fullscreen-mode');
             
-            // 4. Mostrar contenedor fullscreen
             fullscreenContainer.classList.add('active');
             document.querySelector('.app-container').style.display = 'none';
             
-            // 5. Restaurar propiedades del video
             videoPlayer.currentTime = currentTime;
             videoPlayer.volume = currentVolume;
             videoPlayer.muted = wasMuted;
             videoPlayer.controls = true;
 
-            // 6. FORZAR REPRODUCCIÓN si estaba reproduciéndose
             if (wasPlaying) {
                 videoPlayer.play().catch(function(e) {
                     console.log('⚠️ No se pudo reanudar:', e);
@@ -1552,29 +2054,24 @@
                 });
             }
             
-            // 7. Sincronizar chat
             var fullscreenMessages = document.getElementById("fullscreenMessages");
             var normalMessages = document.getElementById("messages");
             fullscreenMessages.innerHTML = normalMessages.innerHTML;
             pauseRemoval = false;
             document.getElementById("fullscreenScrollBottomBtn").style.display = "none";
             
-            // 8. Configurar eventos del chat fullscreen
             setupFullscreenChatEvents();
             
-            // 9. Scroll al final del chat
             setTimeout(function() {
                 fullscreenMessages.scrollTop = fullscreenMessages.scrollHeight;
             }, 100);
             
             isFullscreen = true;
             
-            // 10. Mostrar controles en fullscreen
             setTimeout(function() {
                 showVideoControls();
             }, 100);
             
-            // 11. Activar fullscreen del navegador
             var elem = fullscreenContainer;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
@@ -1586,7 +2083,6 @@
                 elem.mozRequestFullScreen();
             }
             
-            // 12. Configurar event listeners para fullscreen change
             document.addEventListener('fullscreenchange', handleFullscreenChange);
             document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
             document.addEventListener('mozfullscreenchange', handleFullscreenChange);
@@ -1602,29 +2098,23 @@
             
             console.log('🎬 Saliendo de pantalla completa...');
             
-            // 1. Guardar estado actual del video en fullscreen
             var wasPlaying = !videoPlayer.paused;
             var currentTime = videoPlayer.currentTime;
             var currentVolume = videoPlayer.volume;
             var wasMuted = videoPlayer.muted;
             
-            // 2. MOVER el video de vuelta al contenedor original
             videoContainer.appendChild(videoPlayer);
             
-            // 3. Remover clases de estilo fullscreen
             videoPlayer.classList.remove('fullscreen-mode');
             
-            // 4. Ocultar contenedor fullscreen
             fullscreenContainer.classList.remove('active');
             document.querySelector('.app-container').style.display = 'flex';
             
-            // 5. Restaurar propiedades del video
             videoPlayer.currentTime = currentTime;
             videoPlayer.volume = currentVolume;
             videoPlayer.muted = wasMuted;
             videoPlayer.controls = true;
 
-            // 6. FORZAR REPRODUCCIÓN si estaba reproduciéndose
             if (wasPlaying) {
                 videoPlayer.play().catch(function(e) {
                     console.log('⚠️ No se pudo reanudar:', e);
@@ -1632,7 +2122,6 @@
                 });
             }
             
-            // 7. Aplicar estilos para modo normal
             videoPlayer.style.width = '100%';
             videoPlayer.style.height = '100%';
             videoPlayer.style.position = 'absolute';
@@ -1641,12 +2130,10 @@
             
             isFullscreen = false;
             
-            // 8. Mostrar controles en modo normal
             setTimeout(function() {
                 showVideoControls();
             }, 100);
             
-            // 9. Salir del fullscreen del navegador
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
@@ -1657,7 +2144,6 @@
                 document.mozCancelFullScreen();
             }
             
-            // 10. Remover event listeners
             document.removeEventListener('fullscreenchange', handleFullscreenChange);
             document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
             document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
@@ -1672,7 +2158,6 @@
                                    document.mozFullScreenElement ||
                                    document.msFullscreenElement;
             
-            // Si el usuario sale de fullscreen usando la tecla ESC
             if (!fullscreenElement && isFullscreen) {
                 exitFullscreen();
             }
@@ -1709,7 +2194,6 @@
             var videoContainer = document.getElementById('videoContainer');
             var fullscreenVideoSection = document.querySelector('.fullscreen-video-section');
             
-            // Eventos para contenedor normal
             if (videoContainer) {
                 videoContainer.addEventListener('mousemove', function() {
                     if (!isFullscreen) showVideoControls();
@@ -1720,7 +2204,6 @@
                 });
             }
             
-            // Eventos para contenedor fullscreen
             if (fullscreenVideoSection) {
                 fullscreenVideoSection.addEventListener('mousemove', function() {
                     if (isFullscreen) showVideoControls();
@@ -1731,7 +2214,6 @@
                 });
             }
             
-            // Mantener controles visibles cuando el mouse está sobre ellos
             var controlOverlays = document.querySelectorAll('.video-controls-overlay');
             controlOverlays.forEach(function(overlay) {
                 overlay.addEventListener('mouseenter', function() {
@@ -1753,13 +2235,11 @@
                 return;
             }
             
-            // Actualizar dropdown normal
             var qualityDropdownOverlay = document.getElementById('qualityDropdownOverlay');
             if (qualityDropdownOverlay) {
                 updateSingleQualityDropdown(qualityDropdownOverlay);
             }
             
-            // Actualizar dropdown fullscreen
             var qualityDropdownOverlayFullscreen = document.getElementById('qualityDropdownOverlayFullscreen');
             if (qualityDropdownOverlayFullscreen) {
                 updateSingleQualityDropdown(qualityDropdownOverlayFullscreen);
@@ -1814,7 +2294,6 @@
             if (dropdown) {
                 dropdown.classList.toggle('show');
                 
-                // Cerrar otros dropdowns
                 var allDropdowns = document.querySelectorAll('.quality-dropdown-overlay');
                 allDropdowns.forEach(function(otherDropdown) {
                     if (otherDropdown !== dropdown) {
@@ -1826,7 +2305,6 @@
 
         // ========== CONFIGURAR EVENTOS DE BOTONES OVERLAY ==========
         function setupOverlayQualityButtons() {
-            // Botón de calidad normal
             var qualityBtnOverlay = document.getElementById('qualityBtnOverlay');
             if (qualityBtnOverlay) {
                 qualityBtnOverlay.addEventListener('click', function(e) {
@@ -1836,7 +2314,6 @@
                 });
             }
             
-            // Botón de calidad fullscreen
             var qualityBtnOverlayFullscreen = document.getElementById('qualityBtnOverlayFullscreen');
             if (qualityBtnOverlayFullscreen) {
                 qualityBtnOverlayFullscreen.addEventListener('click', function(e) {
@@ -1846,7 +2323,6 @@
                 });
             }
             
-            // Cerrar dropdowns al hacer clic fuera
             document.addEventListener('click', function(event) {
                 var qualityDropdownOverlay = document.getElementById('qualityDropdownOverlay');
                 var qualityBtnOverlay = document.getElementById('qualityBtnOverlay');
@@ -1872,7 +2348,6 @@
             if (!hls) return;
             hls.currentLevel = levelIndex;
             
-            // Actualizar todos los dropdowns
             var allDropdowns = document.querySelectorAll('.quality-dropdown, .quality-dropdown-overlay');
             for (var i = 0; i < allDropdowns.length; i++) {
                 var options = allDropdowns[i].querySelectorAll('.quality-option');
@@ -1920,7 +2395,6 @@
                 qualityDropdown.appendChild(option);
             }
             
-            // Actualizar también los dropdowns overlay
             updateOverlayQualityDropdown();
         }
 
@@ -1963,7 +2437,7 @@
             };
         }
 
-        // ========== CHAT MEJORADO ==========
+        // ========== CHAT MEJORADO CON SISTEMA DE RESPUESTAS MEJORADO ==========
         function joinChannel(channelName) {
             if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.close();
@@ -1971,6 +2445,17 @@
             
             document.getElementById("messages").innerHTML = '';
             document.getElementById("fullscreenMessages").innerHTML = '';
+            
+            // Limpiar historial de mensajes
+            messageHistory = {};
+            lastMessageId = 0;
+            
+            // Obtener las badges de suscriptor del canal antes de conectar el chat
+            getChannelSubscriberBadges(channelName).then(() => {
+                console.log(`Badges de suscriptor obtenidos para ${channelName}`);
+            }).catch(error => {
+                console.error(`Error al obtener badges para ${channelName}:`, error);
+            });
             
             ws = new WebSocket("wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=7.6.0");
             
@@ -1997,21 +2482,97 @@
                 try {
                     var data = JSON.parse(e.data);
                     if (!data.data) return;
-                    var messageData = JSON.parse(data.data);
                     
-                    if (messageData.sender && messageData.content) {
-                        // Obtener badges reales del mensaje
-                        const badges = getUserBadgesFromMessage(messageData);
+                    // Verificar si es un mensaje de chat
+                    if (data.event === "App\\Events\\ChatMessageEvent") {
+                        var messageData = JSON.parse(data.data);
                         
-                        // Pasar los badges a la función de renderizado
-                        addMsgToBothContainersWithBadges(
-                            messageData.sender.username, 
-                            messageData.content, 
-                            badges
-                        );
+                        if (messageData.sender && messageData.content) {
+                            const badges = getUserBadgesFromMessage(messageData);
+                            
+                            let replyData = null;
+                            
+                            // Kick envía los datos de respuesta en diferentes formatos
+                            // Intentar extraer la información de respuesta de varias maneras
+                            if (messageData.reply && messageData.reply.parent_message) {
+                                replyData = messageData.reply;
+                            } else if (messageData.parent_message) {
+                                replyData = { parent_message: messageData.parent_message };
+                            } else if (messageData.original_message) {
+                                replyData = { parent_message: messageData.original_message };
+                            } else if (messageData.reply_parent_message) {
+                                replyData = { parent_message: messageData.reply_parent_message };
+                            } else if (messageData.replyTo) {
+                                replyData = { parent_message: messageData.replyTo };
+                            }
+                            
+                            // También verificar si el mensaje comienza con @username (respuesta informal)
+                            const mentionMatch = messageData.content.match(/^@(\w+)\s+(.+)/);
+                            if (mentionMatch && !replyData) {
+                                const mentionedUser = mentionMatch[1];
+                                const actualMessage = mentionMatch[2];
+                                
+                                // Buscar en el historial si hay un mensaje reciente de ese usuario
+                                let foundRecentMessage = false;
+                                const recentMessages = Object.values(messageHistory).slice(-10);
+                                for (const msg of recentMessages) {
+                                    if (msg.user === mentionedUser) {
+                                        replyData = {
+                                            parent_message: {
+                                                sender: { username: mentionedUser },
+                                                content: msg.text
+                                            }
+                                        };
+                                        foundRecentMessage = true;
+                                        break;
+                                    }
+                                }
+                                
+                                // Si no encontramos, aún mostramos como respuesta pero sin contenido del mensaje original
+                                if (!foundRecentMessage && mentionedUser) {
+                                    replyData = {
+                                        parent_message: {
+                                            sender: { username: mentionedUser },
+                                            content: ""
+                                        }
+                                    };
+                                }
+                                
+                                // Usar el mensaje real (sin la mención)
+                                messageData.content = actualMessage;
+                            }
+                            
+                            // Si tenemos datos de respuesta, asegurarnos de que el contenido del mensaje original esté disponible
+                            if (replyData && replyData.parent_message && !replyData.parent_message.content) {
+                                // Intentar obtener el contenido del mensaje original de otras propiedades
+                                if (messageData.reply_content) {
+                                    replyData.parent_message.content = messageData.reply_content;
+                                } else if (messageData.reply_text) {
+                                    replyData.parent_message.content = messageData.reply_text;
+                                } else if (messageData.reply_message) {
+                                    replyData.parent_message.content = messageData.reply_message;
+                                }
+                            }
+                            
+                            // Mostrar el mensaje
+                            addMsgToBothContainersWithBadges(
+                                messageData.sender.username, 
+                                messageData.content, 
+                                badges,
+                                replyData
+                            );
+                            
+                            // Guardar en el historial para posibles respuestas futuras
+                            messageHistory[lastMessageId] = {
+                                user: messageData.sender.username,
+                                text: messageData.content,
+                                replyTo: replyData ? (replyData.parent_message.sender ? replyData.parent_message.sender.username : null) : null
+                            };
+                        }
                     }
                 } catch(e) {
                     console.error('Error procesando mensaje:', e);
+                    console.log('Datos recibidos:', e.data);
                 }
             };
         }
@@ -2119,36 +2680,29 @@
                 hash = n.charCodeAt(i) + ((hash << 5) - hash);
             }
             
-            // Paleta mixta de colores vibrantes y pasteles
             var vibrantColors = [
-                // Colores vibrantes originales
-                "hsl(0, 100%, 55%)",     // Rojo puro intenso
-                "hsl(0, 100%, 65%)",     // Rojo vibrante
-                "hsl(0, 95%, 50%)",      // Rojo profundo
-                "hsl(30, 100%, 65%)",    // Naranja fuerte
-                "hsl(60, 100%, 65%)",    // Amarillo brillante
-                "hsl(120, 80%, 65%)",    // Verde vivo
-                "hsl(142, 84%, 42%)",    // Verde Kick oficial
-                "hsl(180, 80%, 65%)",    // Cyan brillante
-                "hsl(240, 80%, 70%)",    // Azul eléctrico
-                "hsl(300, 80%, 70%)",    // Rosa neón
-                "hsl(330, 100%, 70%)",   // Rosa fucsia
-                "hsl(45, 100%, 65%)",    // Dorado
-                "hsl(150, 80%, 60%)",    // Verde esmeralda
-                
-                // Nuevos colores pastele suaves
-                "hsl(350, 85%, 75%)",    // Rosa pastel
-                "hsl(30, 85%, 75%)",     // Melocotón pastel
-                "hsl(120, 70%, 75%)",    // Verde pastel    
-                "hsl(240, 70%, 80%)",    // Azul pastel
-                "hsl(270, 70%, 80%)",    // Lila pastel
-                 
-                // Colores pastele más intensos
-                
-                "hsl(80, 80%, 75%)",     // Lima pastel
-                "hsl(160, 75%, 75%)",    // Verde menta
-                "hsl(220, 100%, 60%)",    // Azul intenso   
-                "hsl(50, 90%, 80%)",     // Amarillo crema    
+                "hsl(0, 100%, 55%)",     
+                "hsl(0, 100%, 65%)",     
+                "hsl(0, 95%, 50%)",      
+                "hsl(30, 100%, 65%)",    
+                "hsl(60, 100%, 65%)",    
+                "hsl(120, 80%, 65%)",    
+                "hsl(142, 84%, 42%)",    
+                "hsl(180, 80%, 65%)",    
+                "hsl(240, 80%, 70%)",    
+                "hsl(300, 80%, 70%)",    
+                "hsl(330, 100%, 70%)",   
+                "hsl(45, 100%, 65%)",    
+                "hsl(150, 80%, 60%)",    
+                "hsl(350, 85%, 75%)",    
+                "hsl(30, 85%, 75%)",     
+                "hsl(120, 70%, 75%)",    
+                "hsl(240, 70%, 80%)",    
+                "hsl(270, 70%, 80%)",    
+                "hsl(80, 80%, 75%)",     
+                "hsl(160, 75%, 75%)",    
+                "hsl(220, 100%, 60%)",   
+                "hsl(50, 90%, 80%)",     
             ];
             
             return vibrantColors[Math.abs(hash) % vibrantColors.length];
@@ -2184,12 +2738,10 @@
             var channelInput = document.getElementById('channelInput');
             
             channelInput.addEventListener('focus', function() {
-                // Solo borrar si el texto fue puesto por script hace más de 500ms
                 if (inputTextFromScript && (Date.now() - lastSetTime > 500)) {
                     this.value = '';
                     inputTextFromScript = false;
                 } else {
-                    // Poner cursor al final para texto manual
                     this.setSelectionRange(this.value.length, this.value.length);
                 }
             });
@@ -2210,7 +2762,7 @@
             var channelInput = document.getElementById('channelInput');
             channelInput.value = value;
             inputTextFromScript = fromScript || false;
-            lastSetTime = Date.now(); // Registrar cuándo se puso el texto
+            lastSetTime = Date.now();
         }
         
         // ========== FUNCIONES EXISTENTES DEL STREAM ==========
@@ -2444,7 +2996,6 @@
                     updateQualityDropdown();
                     updateOverlayQualityDropdown();
                     
-                    // Mostrar controles cuando el video se carga
                     setTimeout(function() {
                         showVideoControls();
                     }, 500);
@@ -2669,6 +3220,7 @@
             scrollToVideoContainer();
         }
 
+        // Modificar la función removeChannel para usar el modal
         function removeChannel(channelName) {
             savedChannels = savedChannels.filter(function(channel) { return channel.name !== channelName; });
             localStorage.setItem('savedChannels', JSON.stringify(savedChannels));
@@ -2722,16 +3274,13 @@
             Promise.all(promises)
                 .then(function(results) {
                     results.sort(function(a, b) {
-    // Primero: Canales en vivo vs offline
     if (a.status.is_live && !b.status.is_live) return -1;
     if (!a.status.is_live && b.status.is_live) return 1;
     
-    // Segundo: Si ambos están en vivo, ordenar por viewers (mayor a menor)
     if (a.status.is_live && b.status.is_live) {
         return b.status.viewer_count - a.status.viewer_count;
     }
     
-    // Tercero: Si ambos están offline, ordenar alfabéticamente
     return a.channel.displayName.localeCompare(b.channel.displayName);
 });
                     
@@ -2748,7 +3297,7 @@
                                     '<div class="channel-status ' + (status.is_live ? 'online' : 'offline') + '">' + (status.is_live ? '<i class="fas fa-users"></i> ' + status.viewer_count : '<i class="fas fa-circle"></i> Offline') + '</div>' +
                                     '<button class="view-btn ' + (status.is_live ? '' : 'offline') + '" onclick="event.stopPropagation(); ' + (status.is_live ? 'loadChannel(\'' + channel.name + '\'); scrollToVideoContainer();' : 'window.open(\'https://kick.com/' + channel.name + '\', \'_blank\')') + '">' + (status.is_live ? '<i class="fas fa-play"></i> Ver' : '<i class="fas fa-eye"></i> Ver canal') + '</button>' +
                                 '</div>' +
-                                '<button class="delete-btn" onclick="event.stopPropagation(); removeChannel(\'' + channel.name + '\')">' + '<i class="fas fa-times"></i></button>' +
+                                '<button class="delete-btn" onclick="event.stopPropagation(); confirmRemoveChannel(\'' + channel.name + '\')">' + '<i class="fas fa-times"></i></button>' +
                             '</div>';
                         tabsContainer.innerHTML += channelTabHTML;
                     }
@@ -2797,12 +3346,20 @@
             
             setupChannelInputBehavior();
             
-            // Configurar eventos de botones overlay
             setupOverlayQualityButtons();
             setupVideoControlsEvents();
             
-            // Ocultar controles al inicio
             hideVideoControls();
+            
+            // Configurar evento para cerrar modal al hacer clic fuera
+            var modal = document.getElementById('confirmationModal');
+            if (modal) {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                        closeConfirmationModal();
+                    }
+                });
+            }
             
             document.getElementById('qualityBtn').addEventListener('click', toggleQualityDropdown);
             document.addEventListener('click', function(event) {
